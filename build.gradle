@@ -17,25 +17,40 @@ configurations {
     }
 }
 
-ext {
-    set('springCloudVersion', "2021.0.6")
-}
-
 repositories {
     mavenCentral()
+    gradlePluginPortal()
+}
+
+
+ext {
+    set('springCloudVersion', "2021.0.6")
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation "org.springframework.cloud:spring-cloud-starter-openfeign:3.1.0"
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
     implementation "io.github.openfeign:feign-annotation-error-decoder:11.7"
+    implementation 'io.jsonwebtoken:jjwt:0.9.0'
+    implementation 'org.postgresql:postgresql'
     compileOnly 'org.projectlombok:lombok'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
     implementation "javax.validation:validation-api:2.0.1.Final"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 wrapper {
     gradleVersion = '7.3.2'
 }
@@ -45,25 +60,25 @@ checkstyle {
     configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
     ignoreFailures = false
 }
-
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled true
-        html.enabled true
-    }
-}
+//
+//tasks.withType(Checkstyle) {
+//    reports {
+//        xml.enabled true
+//        html.enabled true
+//    }
+//}
 
 test {
     useJUnitPlatform()
 }
 
 jacoco {
-    toolVersion = "0.8.8"
+    toolVersion = "0.8.6"
 }
 
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        csv.enabled false
-    }
-}
+//jacocoTestReport {
+//    reports {
+//        xml.enabled true
+//        csv.enabled false
+//    }
+//}

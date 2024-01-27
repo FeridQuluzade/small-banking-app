@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: Pass1234
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+service:
+  infobip:
+    url: 3g1wg1.api.infobip.com
+    api-key: 926eff7a07555d4545e48547de407f02-ec606602-89b9-4910-a40d-66a6e1c412f5
+
+application:
+  jwtSecret: JWTSuperSecretKey
+  jwtExpirationInMs: 1800000
