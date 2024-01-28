@@ -1,12 +1,15 @@
 package az.dev.smallbankingapp;
 
+import az.dev.smallbankingapp.config.properties.OtpProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
 
 @Slf4j
 @SpringBootApplication
+@EnableConfigurationProperties(OtpProperties.class)
 public class SmallBankingAppApplication {
 
     public static void main(String[] args) {

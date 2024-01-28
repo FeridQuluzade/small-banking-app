@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: Pass1234
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  redis:
+    url: redis://localhost:6379/0
+
+service:
+  infobip:
+    url: 3g1wg1.api.infobip.com
+    api-key: App 926eff7a07555d4545e48547de407f02-ec606602-89b9-4910-a40d-66a6e1c412f5
+
+application:
+  jwtSecret: JWTSuperSecretKey
+  jwtExpirationInMs: 1800000
+
+otp:
+  time-to-live: 900
+  time-to-expire: 180
+  time-to-resend: 180
+  max-number-of-sending: 3
+  max-number-of-verifying: 3
+  otp-length: 6
