@@ -1,5 +1,6 @@
 package az.dev.smallbankingapp.error.model;
 
+import az.dev.smallbankingapp.util.MessageUtil;
 import az.dev.smallbankingapp.util.RequestContextUtil;
 import feign.error.FeignExceptionConstructor;
 import feign.error.ResponseBody;
@@ -7,6 +8,7 @@ import feign.error.ResponseHeaders;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,14 +21,14 @@ import org.springframework.http.HttpStatus;
 public class ServiceException extends RuntimeException {
 
     private String traceId;
-    private String code;
     private Integer status;
-    private String path;
     private String method;
+    private String path;
     private String message;
-    private LocalDateTime timeStamp;
+    private LocalDateTime timestamp;
+    private String code;
     private List<ValidationError> errors;
-    private Map<String, Object> details;
+    private Map<String, Object> details = Collections.emptyMap();
 
     public ServiceException(String code, String message) {
         super(message);
@@ -36,7 +38,7 @@ public class ServiceException extends RuntimeException {
         this.path = RequestContextUtil.getPath();
         this.method = RequestContextUtil.getMethod();
         this.message = message;
-        this.timeStamp = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now();
     }
 
     @FeignExceptionConstructor
@@ -49,28 +51,45 @@ public class ServiceException extends RuntimeException {
             this.path = errorResponse.getPath();
             this.method = errorResponse.getMethod();
             this.message = errorResponse.getMessage();
-            this.timeStamp = errorResponse.getTimeStamp();
+            this.timestamp = errorResponse.getTimeStamp();
             this.errors = errorResponse.getErrors();
             this.details = errorResponse.getDetails();
         }
     }
 
-    public static ServiceException of(ErrorCode errorCode, String errorMessage) {
-        return new ServiceException(errorCode.code(), errorMessage);
+    public static ServiceException of(ErrorCode errorCode) {
+        return new ServiceException(errorCode.code(), errorCode.message());
     }
 
-    public ServiceException set(String name, Object value) {
-        details.put(name, value);
-        return this;
+    public static ServiceException of(ErrorCode errorCode, Object... args) {
+        return new ServiceException(errorCode.code(),
+                resolveMessage(errorCode.message(), args));
+    }
+
+    public void addDetail(String key, Object value) {
+        if (details.isEmpty()) {
+            details = new HashMap<>();
+        }
+        details.put(key, value);
+    }
+
+    public void setDetails(Map<String, Object> details) {
+        if (details != null && details.isEmpty()) {
+            this.details = details;
+        }
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T get(String name) {
+    public <T> T getDetail(String name) {
         return (T) details.get(name);
     }
 
     public boolean is(ErrorCode errorCode) {
         return errorCode != null && errorCode.code().equals(this.code);
+    }
+
+    public boolean is(HttpStatus httpStatus) {
+        return httpStatus != null && httpStatus.name().equals(this.code);
     }
 
     public String formatProperties() {
@@ -82,13 +101,12 @@ public class ServiceException extends RuntimeException {
                 .collect(Collectors.joining(", "));
     }
 
-    private String formatProperty(String key) {
-        return key + ": " + details.get(key);
+    private static String resolveMessage(String message, Object... args) {
+        return MessageUtil.resolveMessage(message, args);
     }
 
-    @Override
-    public String getMessage() {
-        return this.message;
+    private String formatProperty(String key) {
+        return key + ": " + details.get(key);
     }
 
 }

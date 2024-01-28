@@ -31,18 +31,21 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
     implementation "io.github.openfeign:feign-annotation-error-decoder:11.7"
     implementation 'io.jsonwebtoken:jjwt:0.9.0'
     implementation 'org.postgresql:postgresql'
+    implementation "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
     compileOnly 'org.projectlombok:lombok'
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-
     implementation "javax.validation:validation-api:2.0.1.Final"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 dependencyManagement {

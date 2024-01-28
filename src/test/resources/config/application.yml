@@ -1,0 +1,7 @@
+otp:
+  time-to-live: 900
+  time-to-expire: 180
+  time-to-resend: 180
+  max-number-of-sending: 3
+  max-number-of-verifying: 3
+  otp-length: 6

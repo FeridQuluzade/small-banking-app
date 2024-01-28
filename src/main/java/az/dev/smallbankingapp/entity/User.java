@@ -1,6 +1,7 @@
 package az.dev.smallbankingapp.entity;
 
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -43,8 +44,12 @@ public class User extends DateAudit {
     @Enumerated(value = EnumType.STRING)
     private UserType userType = UserType.NON_VERIFIED;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private CustomerAccount customerAccount;
+
+    public void updateUserType(UserType userType) {
+        this.userType = userType;
+    }
 
     @Override
     public boolean equals(Object o) {

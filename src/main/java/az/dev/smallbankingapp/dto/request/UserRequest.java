@@ -1,5 +1,6 @@
 package az.dev.smallbankingapp.dto.request;
 
+import az.dev.smallbankingapp.error.validation.PhoneNumber;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class UserRequest {
     @NotBlank
     private String password;
 
+    @PhoneNumber
     @NotBlank
     private String gsmNumber;
 

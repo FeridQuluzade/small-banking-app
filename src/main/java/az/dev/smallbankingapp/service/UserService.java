@@ -3,6 +3,8 @@ package az.dev.smallbankingapp.service;
 import az.dev.smallbankingapp.dto.request.UserRequest;
 import az.dev.smallbankingapp.dto.response.StandardResponse;
 import az.dev.smallbankingapp.entity.User;
+import az.dev.smallbankingapp.error.model.ErrorCodes;
+import az.dev.smallbankingapp.error.model.ServiceException;
 import az.dev.smallbankingapp.mapper.UserMapper;
 import az.dev.smallbankingapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,11 @@ public class UserService {
         entity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         userRepository.save(entity);
         return StandardResponse.ok();
+    }
+
+    protected User findByGsmNumber(String gsmNumber) {
+        return userRepository.findUserByGsmNumber(gsmNumber)
+                .orElseThrow(() -> ServiceException.of(ErrorCodes.USER_NOT_FOUND));
     }
 
 }

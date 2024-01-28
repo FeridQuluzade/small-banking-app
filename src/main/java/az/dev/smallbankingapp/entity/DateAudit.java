@@ -1,20 +1,22 @@
 package az.dev.smallbankingapp.entity;
 
-import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @MappedSuperclass
 @Data
-public abstract class DateAudit implements Serializable {
+public abstract class DateAudit {
 
-    @CreatedDate
-    private Instant createdDate;
+    @CreationTimestamp
+    @Column(nullable = false)
+    private LocalDateTime createdDate;
 
-    @LastModifiedDate
-    private Instant updatedDate;
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updatedDate;
 
 }

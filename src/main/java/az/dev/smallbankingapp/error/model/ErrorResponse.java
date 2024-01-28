@@ -39,7 +39,7 @@ public class ErrorResponse {
                 .method(ex.getMethod())
                 .path(ex.getPath())
                 .message(ex.getMessage())
-                .timeStamp(ex.getTimeStamp())
+                .timeStamp(ex.getTimestamp())
                 .errors(ex.getErrors())
                 .details(ex.getDetails())
                 .build();

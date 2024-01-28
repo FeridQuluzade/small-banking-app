@@ -1,6 +1,7 @@
 package az.dev.smallbankingapp.security;
 
 import az.dev.smallbankingapp.entity.User;
+import az.dev.smallbankingapp.entity.UserType;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
@@ -17,9 +18,13 @@ public class UserPrincipal implements UserDetails {
     private Long id;
     private String username;
     private String password;
+    private UserType userType;
 
     public static UserPrincipal from(User user) {
-        return new UserPrincipal(user.getId(), user.getGsmNumber(), user.getPassword());
+        return new UserPrincipal(user.getId(),
+                user.getGsmNumber(),
+                user.getPassword(),
+                user.getUserType());
     }
 
     @Override
