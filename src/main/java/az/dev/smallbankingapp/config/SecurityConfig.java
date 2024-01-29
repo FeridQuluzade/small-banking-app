@@ -24,15 +24,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final JwtTokenProvider tokenProvider;
-    private final UserPrincipalService userPrincipalService;
-
     private static final String CONTENT_SECURITY_POLICY = "script-src 'self'";
     private static final String[] IGNORING_PATH = {
             "/auth/register",
             "/auth/login",
             "/actuator/health"
     };
+    private final JwtTokenProvider tokenProvider;
+    private final UserPrincipalService userPrincipalService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

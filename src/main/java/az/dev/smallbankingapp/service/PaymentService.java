@@ -8,6 +8,7 @@ import az.dev.smallbankingapp.entity.Payment;
 import az.dev.smallbankingapp.entity.UserType;
 import az.dev.smallbankingapp.repository.PaymentRepository;
 import az.dev.smallbankingapp.util.RequestContextUtil;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class PaymentService {
         Payment afterSave = paymentRepository.save(payment);
 
         return PaymentResponse.of(afterSave.getId());
+    }
+
+    protected void updateBalanceById(Long id, BigDecimal balance) {
+        paymentRepository.updateBalanceById(id, balance);
     }
 
     private void checkUserPermission() {

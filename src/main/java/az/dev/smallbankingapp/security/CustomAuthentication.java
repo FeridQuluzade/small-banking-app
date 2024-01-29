@@ -8,8 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 @Data
 public class CustomAuthentication implements Authentication {
 
-    private UserPrincipal userPrincipal;
     private final Collection<? extends GrantedAuthority> authorities;
+    private UserPrincipal userPrincipal;
 
     public CustomAuthentication(
             UserPrincipal userPrincipal,

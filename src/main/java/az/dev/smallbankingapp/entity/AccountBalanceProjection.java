@@ -12,4 +12,8 @@ public interface AccountBalanceProjection {
         return getBalance().subtract(balance);
     }
 
+    default BigDecimal addBalance(BigDecimal balance) {
+        return getBalance().add(balance);
+    }
+
 }

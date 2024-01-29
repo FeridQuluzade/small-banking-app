@@ -29,6 +29,7 @@ ext {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -63,13 +64,13 @@ checkstyle {
     configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
     ignoreFailures = false
 }
-//
-//tasks.withType(Checkstyle) {
-//    reports {
-//        xml.enabled true
-//        html.enabled true
-//    }
-//}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
 
 test {
     useJUnitPlatform()
@@ -79,9 +80,9 @@ jacoco {
     toolVersion = "0.8.6"
 }
 
-//jacocoTestReport {
-//    reports {
-//        xml.enabled true
-//        csv.enabled false
-//    }
-//}
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+    }
+}

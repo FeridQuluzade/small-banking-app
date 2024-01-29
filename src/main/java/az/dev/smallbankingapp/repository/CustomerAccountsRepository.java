@@ -17,7 +17,7 @@ public interface CustomerAccountsRepository extends GenericRepository<CustomerAc
     void updateBalanceByAccountNumber(String accountNumber, BigDecimal newBalance);
 
     @Query("SELECT ca.accountNumber as accountNumber, ca.balance as balance FROM CustomerAccount " +
-            "ca JOIN  ca.user WHERE ca.user.gsmNumber = :gsmNumber")
+            "ca JOIN ca.user WHERE ca.user.gsmNumber = :gsmNumber")
     Optional<AccountBalanceProjection> findByGsmNumber(String gsmNumber);
 
 }

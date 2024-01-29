@@ -1,9 +1,7 @@
 package az.dev.smallbankingapp.entity;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Objects;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,18 +32,10 @@ public class Payment extends DateAudit {
     private PaymentType paymentType;
 
     private BigDecimal amount;
-
     private String source;
     private String destination;
-
-    @ElementCollection
-    private List<Long> refPaymentIds;
-
-    private BigDecimal refAmount;
-
-    public void addRefPaymentIds(Long id) {
-        refPaymentIds.add(id);
-    }
+    private BigDecimal amountAfterRef;
+    private Long originalPaymentId;
 
     @Override
     public boolean equals(Object o) {
@@ -62,15 +52,16 @@ public class Payment extends DateAudit {
         return Objects.equals(getId(), payment.getId()) &&
                 getPaymentType() == payment.getPaymentType() &&
                 Objects.equals(getAmount(), payment.getAmount()) &&
-                Objects.equals(getRefPaymentIds(), payment.getRefPaymentIds()) &&
-                Objects.equals(getRefAmount(), payment.getRefAmount());
+                Objects.equals(getSource(), payment.getSource()) &&
+                Objects.equals(getDestination(), payment.getDestination()) &&
+                Objects.equals(getAmountAfterRef(), payment.getAmountAfterRef()) &&
+                Objects.equals(getOriginalPaymentId(), payment.getOriginalPaymentId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getPaymentType(), getAmount(),
-                getRefPaymentIds(),
-                getRefAmount());
+        return Objects.hash(super.hashCode(), getId(), getPaymentType(), getAmount(), getSource(),
+                getDestination(), getAmountAfterRef(), getOriginalPaymentId());
     }
 
 }

@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ValidationError {
 
-    private ErrorLevel level;
-    private String path;
+    private String property;
     private String message;
 
 }
