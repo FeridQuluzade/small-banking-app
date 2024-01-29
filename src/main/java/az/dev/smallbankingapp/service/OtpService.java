@@ -43,7 +43,7 @@ public class OtpService {
         SmsDto smsDto = SmsDto.withSingleDest(otpRequest.getGsmNumber(),
                 otpRequest.getMessageTemplate() + otp.getOtpCode());
 
-//        smsClient.send(SmsRequest.of(smsDto));
+        smsClient.send(SmsRequest.of(smsDto));
         log.info("OTP Message is sent to phone number: {} ", otpRequest.getGsmNumber());
 
         return new OtpResponse(otp.getUuid(), otpProperties.getTimeToExpire(), timeToResend);
