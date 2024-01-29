@@ -30,7 +30,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 @WithMockUser
 @ExtendWith(MockitoExtension.class)
-class CustomerServiceTest {
+class CustomerAccountServiceTest {
 
     @Mock
     private OtpService otpService;
@@ -42,7 +42,7 @@ class CustomerServiceTest {
     private CustomerAccountsRepository customerAccountsRepository;
 
     @InjectMocks
-    private CustomerService customerService;
+    private CustomerAccountService customerAccountService;
 
     @BeforeEach
     void setUp() {
@@ -77,7 +77,7 @@ class CustomerServiceTest {
         when(customerAccountsRepository.save(customerAccount)).thenReturn(customerAccount);
 
         //then
-        var actual = customerService.verify(verifyCustomerRequest);
+        var actual = customerAccountService.verify(verifyCustomerRequest);
 
         assertEquals(BigDecimal.valueOf(100), actual.getInitialBalance());
 

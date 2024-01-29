@@ -66,6 +66,10 @@ public class ServiceException extends RuntimeException {
                 resolveMessage(errorCode.message(), args));
     }
 
+    private static String resolveMessage(String message, Object... args) {
+        return MessageUtil.resolveMessage(message, args);
+    }
+
     public void addDetail(String key, Object value) {
         if (details.isEmpty()) {
             details = new HashMap<>();
@@ -99,10 +103,6 @@ public class ServiceException extends RuntimeException {
                 .stream()
                 .map(this::formatProperty)
                 .collect(Collectors.joining(", "));
-    }
-
-    private static String resolveMessage(String message, Object... args) {
-        return MessageUtil.resolveMessage(message, args);
     }
 
     private String formatProperty(String key) {

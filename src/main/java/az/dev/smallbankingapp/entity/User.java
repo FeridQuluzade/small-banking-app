@@ -1,16 +1,13 @@
 package az.dev.smallbankingapp.entity;
 
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,9 +41,6 @@ public class User extends DateAudit {
     @Enumerated(value = EnumType.STRING)
     private UserType userType = UserType.NON_VERIFIED;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private CustomerAccount customerAccount;
-
     public void updateUserType(UserType userType) {
         this.userType = userType;
     }
@@ -64,27 +58,17 @@ public class User extends DateAudit {
         }
         User user = (User) o;
         return Objects.equals(getId(), user.getId()) &&
+                Objects.equals(getPassword(), user.getPassword()) &&
                 Objects.equals(getName(), user.getName()) &&
                 Objects.equals(getSurname(), user.getSurname()) &&
                 Objects.equals(getGsmNumber(), user.getGsmNumber()) &&
-                Objects.equals(getCustomerAccount(), user.getCustomerAccount());
+                getUserType() == user.getUserType();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getName(), getSurname(), getGsmNumber(),
-                getCustomerAccount());
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", gsmNumber='" + gsmNumber + '\'' +
-                ", customerAccount=" + customerAccount +
-                '}';
+        return Objects.hash(super.hashCode(), getId(), getPassword(), getName(), getSurname(),
+                getGsmNumber(), getUserType());
     }
 
 }

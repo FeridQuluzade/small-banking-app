@@ -28,11 +28,6 @@ public class OtpRequest {
     @NotBlank(groups = OnVerify.class)
     private String otpCode;
 
-    @JsonIgnore
-    public String getId() {
-        return gsmNumber;
-    }
-
     public static OtpRequest withMessageTemplate(String gsmNumber, String messageTemplate) {
         var request = new OtpRequest();
         request.setGsmNumber(gsmNumber);
@@ -45,6 +40,11 @@ public class OtpRequest {
         request.setGsmNumber(gsmNumber);
         request.setOtpCode(otpCode);
         return request;
+    }
+
+    @JsonIgnore
+    public String getId() {
+        return gsmNumber;
     }
 
 }

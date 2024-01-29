@@ -1,6 +1,5 @@
 package az.dev.smallbankingapp.error;
 
-import az.dev.smallbankingapp.error.model.ErrorLevel;
 import az.dev.smallbankingapp.error.model.ErrorResponse;
 import az.dev.smallbankingapp.error.model.ServiceException;
 import az.dev.smallbankingapp.error.model.UnauthorizedException;
@@ -10,7 +9,6 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -19,6 +17,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +43,12 @@ public class CommonErrorHandler extends ResponseEntityExceptionHandler {
 
     @Resource
     private MessageSource messageSource;
+
+    private static String getField(ConstraintViolation<?> constraintViolation) {
+        String propertyPath = constraintViolation.getPropertyPath().toString();
+        int lastDotIndex = propertyPath.lastIndexOf(".");
+        return propertyPath.substring(lastDotIndex + 1);
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ServiceException.class)
@@ -125,11 +131,8 @@ public class CommonErrorHandler extends ResponseEntityExceptionHandler {
 
         List<ValidationError> errors = constraintViolations.stream()
                 .map(constraintViolation ->
-                        new ValidationError(ErrorLevel.ERROR,
-                                getField(constraintViolation),
-                                messageSource.getMessage(constraintViolation.getMessage(),
-                                        null,
-                                        Locale.ENGLISH)))
+                        new ValidationError(getField(constraintViolation),
+                                getConstraintViolationMessage(constraintViolation)))
                 .collect(Collectors.toList());
 
         return ErrorResponse.build(
@@ -138,12 +141,6 @@ public class CommonErrorHandler extends ResponseEntityExceptionHandler {
                 "Invalid argument values",
                 errors
         );
-    }
-
-    private static String getField(ConstraintViolation<?> constraintViolation) {
-        String propertyPath = constraintViolation.getPropertyPath().toString();
-        int lastDotIndex = propertyPath.lastIndexOf(".");
-        return propertyPath.substring(lastDotIndex + 1);
     }
 
     @Override
@@ -215,14 +212,13 @@ public class CommonErrorHandler extends ResponseEntityExceptionHandler {
         log.error("Method argument not valid, traceId: {}, message: {}", traceId, ex.getMessage());
         List<ValidationError> errors = new ArrayList<>();
         errors.addAll(bindingResult.getFieldErrors().stream()
-                .map(fieldError -> new ValidationError(ErrorLevel.ERROR,
-                        fieldError.getField(),
-                        errorMessage(fieldError))).collect(Collectors.toList()));
+                .map(fieldError -> new ValidationError(fieldError.getField(),
+                        getErrorBindingMessage(fieldError)))
+                .collect(Collectors.toList()));
 
         errors.addAll(bindingResult.getGlobalErrors().stream()
-                .map(globalError -> new ValidationError(ErrorLevel.ERROR,
-                        globalError.getObjectName(),
-                        errorMessage(globalError)))
+                .map(globalError -> new ValidationError(globalError.getObjectName(),
+                        getErrorBindingMessage(globalError)))
                 .collect(Collectors.toList()));
 
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
@@ -239,11 +235,25 @@ public class CommonErrorHandler extends ResponseEntityExceptionHandler {
                 .body(errorResponse);
     }
 
-    private String errorMessage(ObjectError objectError) {
-        return messageSource.getMessage(
-                Objects.requireNonNull(objectError.getDefaultMessage()),
-                objectError.getArguments(),
-                Locale.ENGLISH);
+    private String getErrorBindingMessage(ObjectError objectError) {
+        String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+        return buildErrorMessage(message);
+    }
+
+    private String getConstraintViolationMessage(ConstraintViolation<?> constraintViolation) {
+        return buildErrorMessage(constraintViolation.getMessage());
+    }
+
+    private String buildErrorMessage(String message) {
+        try {
+            Locale locale = LocaleContextHolder.getLocale();
+            return messageSource.getMessage(
+                    message,
+                    null,
+                    locale);
+        } catch (NoSuchMessageException exception) {
+            return message;
+        }
     }
 
 }

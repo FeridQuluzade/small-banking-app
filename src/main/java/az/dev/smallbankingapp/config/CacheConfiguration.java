@@ -12,7 +12,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @RequiredArgsConstructor
-public  class CacheConfiguration {
+public class CacheConfiguration {
 
     private final RedisConnectionFactory redisConnectionFactory;
     private final ObjectMapper objectMapper;
