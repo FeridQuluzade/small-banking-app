@@ -33,7 +33,7 @@ public class CustomerAccountService {
                 OtpRequest.withOtpCode(gsmNumber, request.getCode()));
 
         User user = userService.findByGsmNumber(gsmNumber);
-        user.updateUserType(UserType.VERIFIED);
+        userService.updateUserStatus(user, UserType.VERIFIED);
 
         CustomerAccount customerAccount = new CustomerAccount();
         customerAccount.setBalance(INITIAL_BALANCE);

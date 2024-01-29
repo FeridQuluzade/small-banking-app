@@ -24,6 +24,11 @@ public class User extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(generator = "user_seq_gen", strategy = GenerationType.SEQUENCE)
+//    @SequenceGenerator(
+//            name = "user_seq_gen",
+//            sequenceName = "user_seq",
+//            allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)
@@ -40,10 +45,6 @@ public class User extends DateAudit {
 
     @Enumerated(value = EnumType.STRING)
     private UserType userType = UserType.NON_VERIFIED;
-
-    public void updateUserType(UserType userType) {
-        this.userType = userType;
-    }
 
     @Override
     public boolean equals(Object o) {

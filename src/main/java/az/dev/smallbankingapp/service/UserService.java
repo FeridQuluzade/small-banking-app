@@ -3,6 +3,7 @@ package az.dev.smallbankingapp.service;
 import az.dev.smallbankingapp.dto.request.UserRequest;
 import az.dev.smallbankingapp.dto.response.StandardResponse;
 import az.dev.smallbankingapp.entity.User;
+import az.dev.smallbankingapp.entity.UserType;
 import az.dev.smallbankingapp.error.model.ErrorCodes;
 import az.dev.smallbankingapp.error.model.ServiceException;
 import az.dev.smallbankingapp.mapper.UserMapper;
@@ -24,6 +25,11 @@ public class UserService {
         entity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         userRepository.save(entity);
         return StandardResponse.ok();
+    }
+
+    protected void updateUserStatus(User user, UserType userType) {
+        user.setUserType(userType);
+        userRepository.save(user);
     }
 
     protected User findByGsmNumber(String gsmNumber) {

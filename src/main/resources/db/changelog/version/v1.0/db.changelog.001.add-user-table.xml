@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+
+    <changeSet id="seq.user.001" author="Farid Quluzada">
+        <createSequence sequenceName="user_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="tbl.user.001" author="Farid Quluzada">
+        <createTable tableName="users">
+
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="password" type="varchar(120)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_type" type="varchar(40)"/>
+
+            <column name="name" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="surname" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="gsm_number" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

@@ -2,6 +2,7 @@ package az.dev.smallbankingapp.entity;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,16 +27,26 @@ public class Payment extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(generator = "payments_seq_gen", strategy = GenerationType.SEQUENCE)
+//    @SequenceGenerator(
+//            name = "payments_seq_gen",
+//            sequenceName = "payments_seq",
+//            allocationSize = 1)
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private PaymentType paymentType;
 
-    private BigDecimal amount;
+    @Column(length = 40)
     private String source;
+
+    @Column(length = 40)
     private String destination;
-    private BigDecimal amountAfterRef;
     private Long originalPaymentId;
+
+    private BigDecimal amount;
+    private BigDecimal amountAfterRef;
 
     @Override
     public boolean equals(Object o) {

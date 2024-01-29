@@ -9,8 +9,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    open-in-view: false
   redis:
     url: redis://localhost:6379/0
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: false
 
 service:
   infobip:

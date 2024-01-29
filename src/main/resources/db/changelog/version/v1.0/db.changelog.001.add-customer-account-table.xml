@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+
+    <changeSet id="seq.customer_account.001" author="Farid Quluzada">
+        <createSequence sequenceName="customer_account_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="tbl.customer_account.001" author="Farid Quluzada">
+        <createTable tableName="customer_accounts">
+
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="user_id" type="bigint"/>
+
+            <column name="account_number" type="varchar(40)"/>
+            <column name="balance" type="DECIMAL"/>
+
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="idx.customer_account.001" author="Farid Quluzada">
+
+        <createIndex tableName="customer_accounts"
+                     indexName="idx1_customer_account"
+                     unique="true">
+            <column name="account_number"/>
+        </createIndex>
+
+
+    </changeSet>
+
+    <changeSet id="foreign.customer_account.001" author="Farid Quluzada">
+        <addForeignKeyConstraint
+                constraintName="fk_user_id"
+                baseTableName="customer_accounts"
+                baseColumnNames="user_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+</databaseChangeLog>
