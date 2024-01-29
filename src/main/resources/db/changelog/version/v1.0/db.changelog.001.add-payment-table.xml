@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+
+    <changeSet id="seq.payment.001" author="Faid Quluzada">
+        <createSequence sequenceName="payments_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="tbl.payment.001" author="Farid Quluzada">
+        <createTable tableName="payments">
+
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="payment_type" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source" type="varchar(40)"/>
+            <column name="destination" type="varchar(40)"/>
+            <column name="original_payment_id" type="bigint"/>
+
+            <column name="amount" type="DECIMAL"/>
+            <column name="amount_after_ref" type="DECIMAL"/>
+
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="idx.payments.001" author="Farid Quluzada">
+        <createIndex tableName="payments"
+                     indexName="idx0_payments"
+                     unique="true">
+            <column name="id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

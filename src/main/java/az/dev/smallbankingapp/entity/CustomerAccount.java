@@ -21,6 +21,11 @@ public class CustomerAccount extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(generator = "customer_account_seq_gen", strategy = GenerationType.SEQUENCE)
+//    @SequenceGenerator(
+//            name = "customer_account_seq_gen",
+//            sequenceName = "customer_account_seq",
+//            allocationSize = 1)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
